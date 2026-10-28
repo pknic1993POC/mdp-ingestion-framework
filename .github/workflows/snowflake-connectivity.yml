@@ -1,7 +1,7 @@
 name: Snowflake connectivity
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -28,10 +28,8 @@ jobs:
           use-oidc: true
           cli-version: "3.16"
 
-      - name: Test Snowflake
+      - name: Test Snowflake connection
         env:
           SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER: SVC_GITHUB_INGESTION
-          SNOWFLAKE_ROLE: INGESTION_CICD_BOOTSTRAP
         run: |
-          snow sql -q "SELECT CURRENT_USER();" -x
+          snow connection test -x
